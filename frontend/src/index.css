@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --color-background: #9b59b6;
@@ -7,9 +8,5 @@
 @layer base {
   body {
     @apply bg-background;
-  }
-
-  * {
-    @apply text-white;
   }
 }
