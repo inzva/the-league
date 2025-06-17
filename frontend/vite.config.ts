@@ -16,4 +16,7 @@ export default defineConfig({
     tailwindcss(),
     react(),
   ],
+
+  // for gh-pages
+  base: "/the-league/",
 });
