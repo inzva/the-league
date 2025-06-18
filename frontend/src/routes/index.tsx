@@ -1,5 +1,6 @@
 import { Container } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
+import { Slogan } from "./-components/slogan";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -8,8 +9,14 @@ export const Route = createFileRoute("/")({
 function RouteComponent() {
   return (
     <Container>
-      <article className="prose prose-invert max-w-none py-8">
-        <h1>The League: Competitive Programming at Its Finest</h1>
+      <article className="prose max-w-none py-8">
+        <h1 className="flex items-center gap-5">
+          <div className="shrink-0">The League</div>
+
+          <div className="-mb-0">
+            <Slogan />
+          </div>
+        </h1>
         <p>
           Welcome to The League, an innovative competitive programming event
           that blends the excitement of esports with the intellectual challenge
