@@ -1,6 +1,7 @@
 bidict==0.23.1
 blinker==1.9.0
 click==8.2.1
+dnspython==2.7.0
 dotenv==0.9.9
 Flask==3.1.1
 Flask-SocketIO==5.5.1
@@ -8,6 +9,7 @@ h11==0.16.0
 itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.2
+pymongo==4.13.2
 python-dotenv==1.1.0
 python-engineio==4.12.2
 python-socketio==5.13.0
