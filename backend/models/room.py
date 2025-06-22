@@ -30,6 +30,7 @@ class Room:
             {"room_id": self.room_id},
             {"$set": {
                 "phase": self.phase.name,
+                "player_ids": self.player_ids,
                 "banned_topics": self.banned_topics,
                 "picked_topics": self.picked_topics
             }},
@@ -40,20 +41,32 @@ class Room:
         room_data = rooms_collection.find_one({"room_id": self.room_id})
         if room_data:
             self.phase = room_data["phase"]
+            self.player_ids = room_data["player_ids"]
             self.banned_topics = room_data["banned_topics"]
             self.picked_topics = room_data["picked_topics"]
 
     def add_player(self, player_id, team):
-        # TODO: Add the player to the specified team
-        # If the player is the last player, set the room phase to BAN
-        pass
+        self.sync_from_db()
+        if team not in [1, 2]:
+            raise ValueError("Invalid team number. Must be 1 or 2.")
+        # TODO: Add the player to the specified team if not already present in any teams.
+        # TODO: If the player is the last player, set the room phase to BAN
+        # TODO: Raise error in bad cases.
+        self.sync_to_db()
 
     def remove_player(self, player_id, team):
-        # TODO: Remove the player from the specified team, delete all previous events.
+        self.sync_from_db()
+        if team not in [1, 2]:
+            raise ValueError("Invalid team number. Must be 1 or 2.")
+        # TODO: Remove the player from the specified team if they are in, delete all previous events.
         # TODO: If the room state is not WAITING, set the room phase to WAITING
-        pass
+        # TODO: Raise error in bad cases.
+        self.sync_to_db()
 
     def handle_action(self, player_id, action_type):
+        self.sync_from_db()
+        if player_id not in self.player_ids[1] and player_id not in self.player_ids[2]:
+            raise ValueError("Player not in the room")
         if action_type == ActionType.BAN:
             # TODO: Check if the room is in the BAN phase and it is the player's turn
             # TODO: Check if the topic is not already banned
@@ -68,3 +81,4 @@ class Room:
             pass
         else:
             raise ValueError("Invalid action type")
+        self.sync_to_db()
