@@ -2,7 +2,7 @@ import requests
 
 def get_team_info(team_id):
     """
-    Fetches team information from AlgoLeague API
+    Returns team information from AlgoLeague API
     """
     url = f"https://api.algoleague.com/api/app/app-user-team/{team_id}"
 

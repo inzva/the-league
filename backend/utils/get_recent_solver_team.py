@@ -1,12 +1,15 @@
-import time
-import requests
+from config import ALGOLEAGUE_COOKIE
 from datetime import datetime
+import requests
+import time
 
 def get_recent_solver_team(problem_id, player_usernames):
-    cookie = "" # Replace with actual cookie
+    """
+    Returns the team of the most recent solver for a given problem ID from the AlgoLeague API.
+    """
     url = "https://admin.algoleague.com/api/app/problem/authorized-problems"
     headers = {
-        "Cookie": cookie
+        "Cookie": ALGOLEAGUE_COOKIE,
     }
     params = {
         "problemId": problem_id,
@@ -24,10 +27,9 @@ def get_recent_solver_team(problem_id, player_usernames):
         print(f"Error checking submissions for problem {problem_id}: {e}")
         return None
 
-    # Check each accepted submission
     current_time = time.time()
+
     for item in data.get("items", []):
-        # Use the accepted submission's endDate; it is expected in ISO 8601 format.
         end_date_str = item.get("endDate")
         if not end_date_str:
             continue
@@ -35,12 +37,9 @@ def get_recent_solver_team(problem_id, player_usernames):
             end_dt = datetime.fromisoformat(end_date_str.replace("Z", "+00:00"))
         except ValueError:
             continue
-        # Convert end_dt to timestamp.
         end_timestamp = end_dt.timestamp()
-        # If solved within last one hour (3600 seconds)
         if current_time - end_timestamp <= 3600:
             solver_username = item.get("userName")
-            # Determine the team for the solver
             for team_key, usernames in player_usernames.items():
                 if solver_username in usernames:
                     return team_key

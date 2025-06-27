@@ -1,6 +1,6 @@
+from config import ALGOLEAGUE_COOKIE
 import requests
 
-cookie = ""  # Replace with actual cookie value
 def get_problems_by_tag_id(tag_id):
     """
     Fetches a list of problem IDs for a given tag ID from the AlgoLeague API.
@@ -20,7 +20,7 @@ def get_problems_by_tag_id(tag_id):
         "combineWith": "Or"
     }
     headers = {
-        "Cookie": cookie
+        "Cookie": ALGOLEAGUE_COOKIE,
     }
 
     try:

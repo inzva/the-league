@@ -1,8 +1,8 @@
+from config import ALGOLEAGUE_COOKIE
 import random
 import requests
 
 def get_unsolved_random_problem(available_problems, player_usernames):
-    cookie = ""  # Replace with actual cookie value
     if not available_problems:
         return None
 
@@ -18,7 +18,7 @@ def get_unsolved_random_problem(available_problems, player_usernames):
               "allSubmissions": "true", 
               "skipCount": 0, 
               "maxResultCount": 10000}
-    headers = {"Cookie": cookie}
+    headers = {"Cookie": ALGOLEAGUE_COOKIE}
 
     while candidates:
         problem_id = random.choice(candidates)
