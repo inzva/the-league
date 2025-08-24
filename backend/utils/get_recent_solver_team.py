@@ -3,6 +3,7 @@ from datetime import datetime
 import requests
 import time
 
+
 def get_recent_solver_team(problem_id, player_usernames):
     """
     Returns the team of the most recent solver for a given problem ID from the AlgoLeague API.
@@ -18,7 +19,7 @@ def get_recent_solver_team(problem_id, player_usernames):
         "skipCount": 0,
         "maxResultCount": 10000,
     }
-    
+
     try:
         response = requests.get(url, params=params, headers=headers)
         response.raise_for_status()

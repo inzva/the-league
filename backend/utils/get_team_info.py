@@ -1,5 +1,6 @@
 import requests
 
+
 def get_team_info(team_id):
     """
     Returns team information from AlgoLeague API

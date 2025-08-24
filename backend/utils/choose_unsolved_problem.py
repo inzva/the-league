@@ -2,6 +2,7 @@ from config import ALGOLEAGUE_COOKIE
 import random
 import requests
 
+
 def get_unsolved_random_problem(available_problems, player_usernames):
     if not available_problems:
         return None
@@ -11,13 +12,9 @@ def get_unsolved_random_problem(available_problems, player_usernames):
         team_players.update(players)
 
     candidates = available_problems.copy()
-    submission_url = ("https://admin.algoleague.com/api/app/problem-submission-results"
-                      "?status[0]=Accepted&allSubmissions=true&skipCount=0&maxResultCount=10000")
+    submission_url = "https://admin.algoleague.com/api/app/problem-submission-results?status[0]=Accepted&allSubmissions=true&skipCount=0&maxResultCount=10000"
     url = "https://admin.algoleague.com/api/app/problem/authorized-problems"
-    params = {"status[0]": "Accepted", 
-              "allSubmissions": "true", 
-              "skipCount": 0, 
-              "maxResultCount": 10000}
+    params = {"status[0]": "Accepted", "allSubmissions": "true", "skipCount": 0, "maxResultCount": 10000}
     headers = {"Cookie": ALGOLEAGUE_COOKIE}
 
     while candidates:
