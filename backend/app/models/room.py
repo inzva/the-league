@@ -92,10 +92,12 @@ class Room:
             self.phase = RoomPhase.WAITING
             self.game_start_time = None
             self.game_end_time = None
+            self.sync_to_db()
             return
 
         if self.action_count < 12:
             self.phase = RoomPhase.DRAFT
+            self.sync_to_db()
             return
 
         current_time = time.time()
@@ -137,6 +139,8 @@ class Room:
             case ActionType.BAN:
                 if topic in self.banned_topics:
                     raise ValueError("Topic already banned")
+                if topic in self.picked_topics:
+                    raise ValueError("Cannot ban a picked topic")
                 self.banned_topics.append(topic)
             case ActionType.PICK:
                 if topic in self.picked_topics:
@@ -153,7 +157,7 @@ class Room:
     def add_player(self, player_username):
         self.sync_from_db()
 
-        if self.active_players >= MAX_ROOM_CAPACITY:
+        if len(self.active_players) >= MAX_ROOM_CAPACITY:
             raise ValueError("Room is full")
 
         if player_username in self.active_players:
@@ -187,6 +191,9 @@ class Room:
 
         if self.phase != RoomPhase.PLAYING:
             raise ValueError("Room is not in PLAYING phase")
+        
+        if self.game_start_time is not None and time.time() < self.game_start_time:
+            raise ValueError("Game has not started yet")
 
         tag_name_to_id = get_algoleague_problem_tags_and_ids()
 
