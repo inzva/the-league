@@ -1,7 +1,8 @@
-from config import ALGOLEAGUE_COOKIE
-from datetime import datetime
-import requests
 import time
+from datetime import datetime
+
+import requests
+from app.config import ALGOLEAGUE_COOKIE
 
 
 def get_recent_solver_team(problem_id, player_usernames):

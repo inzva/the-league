@@ -1,28 +1,18 @@
-from enum import Enum
-from pymongo import MongoClient
-from config import ACTION_SEQUENCE, MONGO_URI, MAX_ROOM_CAPACITY
-from utils.get_problem_by_tag import get_problems_by_tag_id
-from utils.get_algoleague_problem_tags import get_algoleague_problem_tags_and_ids
-from utils.get_team_info import get_team_info
-
 import random
 import time
+from enum import Enum
+
+from app.config import ACTION_SEQUENCE, MAX_ROOM_CAPACITY, MONGO_URI
+from app.models.enums import ActionType, RoomPhase
+from app.utils.get_algoleague_problem_tags import \
+    get_algoleague_problem_tags_and_ids
+from app.utils.get_problem_by_tag import get_problems_by_tag_id
+from app.utils.get_team_info import get_team_info
+from pymongo import MongoClient
 
 client = MongoClient(MONGO_URI)
 db = client.theleague
 rooms_collection = db.rooms
-
-
-class RoomPhase(Enum):
-    WAITING = 0
-    DRAFT = 1
-    PLAYING = 2
-    FINISHED = 3
-
-
-class ActionType(Enum):
-    BAN = 1
-    PICK = 2
 
 
 class Room:
@@ -36,16 +26,22 @@ class Room:
             team2_info = get_team_info(team2_id)
             self.team_ids = {"team1": team1_id, "team2": team2_id}
             self.player_usernames = {
-                team1_id: [team1_info["leadUser"]["username"]] + [member["username"] for member in team1_info["members"]],
-                team2_id: [team2_info["leadUser"]["username"]] + [member["username"] for member in team2_info["members"]],
+                team1_id: [team1_info["leadUser"]["username"]]
+                + [member["username"] for member in team1_info["members"]],
+                team2_id: [team2_info["leadUser"]["username"]]
+                + [member["username"] for member in team2_info["members"]],
             }
         self.active_players = []
         self.banned_topics = []
         self.picked_topics = []
         self.action_count = 0
         # For auto-start and game duration
-        self.game_start_time = None  # Timestamp when the game should auto-start (30 sec later)
-        self.game_end_time = None  # Timestamp when the game ends (60 min after game starts)
+        self.game_start_time = (
+            None  # Timestamp when the game should auto-start (30 sec later)
+        )
+        self.game_end_time = (
+            None  # Timestamp when the game ends (60 min after game starts)
+        )
 
     def sync_from_db(self):
         room_data = rooms_collection.find_one({"room_id": self.room_id})
@@ -163,7 +159,10 @@ class Room:
         if player_username in self.active_players:
             raise ValueError("Player already in the room")
 
-        if player_username not in self.player_usernames[self.team_ids["team1"]] and player_username not in self.player_usernames[self.team_ids["team2"]]:
+        if (
+            player_username not in self.player_usernames[self.team_ids["team1"]]
+            and player_username not in self.player_usernames[self.team_ids["team2"]]
+        ):
             raise ValueError("Player is not supposed to be in this room")
 
         self.active_players.append(player_username)

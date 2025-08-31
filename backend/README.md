@@ -18,6 +18,8 @@ A Flask + Flask-SocketIO server for “The League” competitive programming pic
 
    ```bash
    pip install -r requirements.txt
+
+   pip install -e .
    ```
 
 3. **Configure environment variables**
@@ -39,5 +41,5 @@ A Flask + Flask-SocketIO server for “The League” competitive programming pic
 By default the app listens on port 5000 and allows CORS from any origin.
 
 ```bash
-python app.py
+python app/main.py
 ```

@@ -1,5 +1,5 @@
+from app.models.room import Room, rooms_collection
 from flask import Blueprint, jsonify, request
-from models.room import Room, rooms_collection
 
 rooms_bp = Blueprint("rooms", __name__)
 

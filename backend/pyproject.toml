@@ -1,0 +1,13 @@
+[project]
+name = "app"
+version = "0.1.0"
+description = "The League's backend"
+
+# https://packaging.python.org/en/latest/tutorials/packaging-projects/#choosing-build-backend
+[build-system]
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"
+
+# https://docs.astral.sh/uv/concepts/build-backend/#modules
+[tool.uv.build-backend]
+module-root = ""

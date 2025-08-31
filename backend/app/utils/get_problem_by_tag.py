@@ -1,5 +1,5 @@
-from config import ALGOLEAGUE_COOKIE
 import requests
+from app.config import ALGOLEAGUE_COOKIE
 
 
 def get_problems_by_tag_id(tag_id):

@@ -1,5 +1,5 @@
+from app.utils.get_algoleague_problem_tags import get_algoleague_problem_tags_and_ids
 from flask import Blueprint, jsonify
-from utils.get_algoleague_problem_tags import get_algoleague_problem_tags
 
 tags_bp = Blueprint("tags", __name__)
 
@@ -9,5 +9,5 @@ def get_tags():
     """
     Return a list of all algoleague tags.
     """
-    tags = get_algoleague_problem_tags()
+    tags = get_algoleague_problem_tags_and_ids()
     return jsonify(tags)

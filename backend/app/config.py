@@ -1,6 +1,8 @@
 import os
-from backend.models.room import ActionType
+
 from dotenv import load_dotenv
+
+from app.models.enums import ActionType
 
 load_dotenv()
 

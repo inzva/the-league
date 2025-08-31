@@ -1,0 +1,5 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5001:5000"
