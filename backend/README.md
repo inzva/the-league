@@ -40,6 +40,14 @@ A Flask + Flask-SocketIO server for “The League” competitive programming pic
 
 By default the app listens on port 5000 and allows CORS from any origin.
 
+### Development
+
 ```bash
 python app/main.py
+```
+
+### Production
+
+```bash
+gunicorn -k gevent app.main:app
 ```

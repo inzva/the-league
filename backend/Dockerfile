@@ -8,8 +8,8 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN pip install -e .
+RUN pip install .
 
 EXPOSE 5000
 
-CMD ["python", "app/main.py"]
+CMD ["gunicorn", "-k", "gevent", "-b", "0.0.0.0:5000", "app.main:app"]

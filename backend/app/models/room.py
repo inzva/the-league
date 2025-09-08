@@ -26,10 +26,10 @@ class Room:
             team2_info = get_team_info(team2_id)
             self.team_ids = {"team1": team1_id, "team2": team2_id}
             self.player_usernames = {
-                team1_id: [team1_info["leadUser"]["username"]]
-                + [member["username"] for member in team1_info["members"]],
-                team2_id: [team2_info["leadUser"]["username"]]
-                + [member["username"] for member in team2_info["members"]],
+                team1_id: [team1_info["leadUser"]["userName"]]
+                + [member["userName"] for member in team1_info["members"]],
+                team2_id: [team2_info["leadUser"]["userName"]]
+                + [member["userName"] for member in team2_info["members"]],
             }
         self.active_players = []
         self.banned_topics = []
