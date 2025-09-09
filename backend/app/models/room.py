@@ -4,8 +4,7 @@ from enum import Enum
 
 from app.config import ACTION_SEQUENCE, MAX_ROOM_CAPACITY, MONGO_URI
 from app.models.enums import ActionType, RoomPhase
-from app.utils.get_algoleague_problem_tags import \
-    get_algoleague_problem_tags_and_ids
+from app.utils.get_algoleague_problem_tags import get_algoleague_problem_tags_and_ids
 from app.utils.get_problem_by_tag import get_problems_by_tag_id
 from app.utils.get_team_info import get_team_info
 from pymongo import MongoClient
@@ -24,12 +23,16 @@ class Room:
         if team1_id is not None and team2_id is not None:
             team1_info = get_team_info(team1_id)
             team2_info = get_team_info(team2_id)
+
+            if team1_info is None or team2_info is None:
+                raise ValueError("Failed to fetch team infos")
+
             self.team_ids = {"team1": team1_id, "team2": team2_id}
             self.player_usernames = {
-                team1_id: [team1_info["leadUser"]["userName"]]
-                + [member["userName"] for member in team1_info["members"]],
-                team2_id: [team2_info["leadUser"]["userName"]]
-                + [member["userName"] for member in team2_info["members"]],
+                team1_id: [team1_info.leadUser.userName]
+                + [member.userName for member in team1_info.members or []],
+                team2_id: [team2_info.leadUser.userName]
+                + [member.userName for member in team2_info.members or []],
             }
         self.active_players = []
         self.banned_topics = []
@@ -46,7 +49,7 @@ class Room:
     def sync_from_db(self):
         room_data = rooms_collection.find_one({"room_id": self.room_id})
         if room_data:
-            self.phase = room_data["phase"]
+            self.phase = RoomPhase[room_data["phase"]]
             self.team_ids = room_data["team_ids"]
             self.player_usernames = room_data["player_usernames"]
             self.active_players = room_data["active_players"]
@@ -191,7 +194,7 @@ class Room:
 
         if self.phase != RoomPhase.PLAYING:
             raise ValueError("Room is not in PLAYING phase")
-        
+
         if self.game_start_time is not None and time.time() < self.game_start_time:
             raise ValueError("Game has not started yet")
 

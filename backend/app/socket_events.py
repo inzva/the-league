@@ -78,6 +78,7 @@ class WebSocketServer:
 
             room_key = f"room_{room_id}"
             join_room(room_key)
+            rooms_state[room_id] = room
             self._broadcast_state(room_id)
 
         @self.socketio.on("leave_room")
